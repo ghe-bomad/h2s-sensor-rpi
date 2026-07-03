@@ -1,0 +1,31 @@
+### Footprint positions - created on 2026-07-03T13:53:44 ###
+### Printed by KiCad version 10.0.1
+## Unit = mm, Angle = deg.
+## Side : All
+# Ref     Val                                    Package                                 PosX       PosY       Rot  Side
+C1        1uF                                    C0603                               178.7900   -79.0000   90.0000  top
+C2        1uF                                    C0603                               171.0500   -79.0000   90.0000  top
+C3        100nF                                  C0402                               172.7800   -82.4600   90.0000  top
+C4        100nF                                  C0402                               169.8156   -84.7852    0.0000  top
+C5        100nF                                  C0402                               172.8400   -94.0500  180.0000  top
+C6        1uF                                    C0603                               177.7900   -94.2900  180.0000  top
+C7        100nF                                  C0402                               172.3800   -96.2300   90.0000  top
+CN1       PA001-4P                               CONN-TH_4P-P5.08_PA001-4P           161.5000   -87.4500  -90.0000  top
+E1        RLSD32A051LC                           SOD-323_L1.8-W1.3-LS2.5-BI          167.0400   -80.6200  -90.0000  top
+E2        RLSD32A051LC                           SOD-323_L1.8-W1.3-LS2.5-BI          167.0300   -84.0900   90.0000  top
+E3        RLSD32A051LC                           SOD-323_L1.8-W1.3-LS2.5-BI          167.0300   -87.8300   90.0000  top
+H1        MountingHole                           MountingHole_3.2mm_M3               152.9000   -99.0300    0.0000  top
+H2        MountingHole                           MountingHole_3.2mm_M3               204.3600   -99.0300    0.0000  top
+H3        MountingHole                           MountingHole_3.2mm_M3               204.3600   -75.6200    0.0000  top
+H4        MountingHole                           MountingHole_3.2mm_M3               152.9000   -75.6200    0.0000  top
+H5        HX_PH254-01-03-Z-L11.5_PCB_PIN_HEADER  HDR-TH_3P-P2.54-V-M-1               160.9000   -73.4900    0.0000  top
+J5        H2S_Sensor                             H2S_Sensor_3Pin_D20mm               192.6800   -87.2800  180.0000  top
+R1        4.7kOhm                                R0603                               168.6560   -94.8048  -90.0000  top
+R2        4.7kOhm                                R0603                               166.5732   -94.7808   90.0000  top
+R17       10k                                    R_0603_1608Metric                   175.1900   -81.8400  180.0000  top
+TH1       Thermistor_NTC                         R_0603_1608Metric                   192.6800   -87.2800    0.0000  top
+U1        LP5907MFX-3.3                          SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BR   174.9900   -79.2500  180.0000  top
+U2        LMP91002SDX/NOPB                       WSON-14_L4.0-W4.0-P0.50-BL-EP       175.3900   -91.2000  -90.0000  top
+U3        ADR3425ARJZ-R7                         SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR   175.1700   -96.7300    0.0000  top
+U7        ADS1115IDGS                            TSSOP-10_3x3mm_P0.5mm               175.2400   -85.2000  180.0000  top
+## End

@@ -1,0 +1,23 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,10.0.1*%
+%TF.CreationDate,2026-07-03T13:51:42+02:00*%
+%TF.ProjectId,H2S_Sensor,4832535f-5365-46e7-936f-722e6b696361,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Profile,NP*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 10.0.1) date 2026-07-03 13:51:42*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%TA.AperFunction,Profile*%
+%ADD10C,0.050000*%
+%TD*%
+G04 APERTURE END LIST*
+D10*
+X148700000Y-71340000D02*
+X208430000Y-71340000D01*
+X208430000Y-103190000D01*
+X148700000Y-103190000D01*
+X148700000Y-71340000D01*
+M02*

@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# KiCad — auto-backup archives (e.g. H2S_Sensor-backups/)
+*-backups/
+
+# KiCad — backup & autosave copies
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*.bak
+_autosave-*
+
+# KiCad — footprint info cache (auto-generated)
+fp-info-cache
+
+# KiCad — editor lock files
+*.lck
+~*.lck

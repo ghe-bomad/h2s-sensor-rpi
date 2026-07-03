@@ -595,7 +595,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "/Users/flurin/Desktop/BSc_Thesis_GHE/H2S_Sensor_PCB/jlcpcb/gerber/",
+      "plot": "/Users/jtkaczuk/codes/bomad/mzuzu-biogas-site/hardware/h2s-pcb-rpi/pcb-design/jlcpcb/gerber/",
       "pos_files": "/Users/flurin/Desktop/",
       "specctra_dsn": "",
       "step": "",
@@ -1031,12 +1031,6 @@
           "group_by": false,
           "label": "LOAD CAPACITANCE",
           "name": "LOAD CAPACITANCE",
-          "show": false
-        },
-        {
-          "group_by": false,
-          "label": "MANUFACTURER",
-          "name": "MANUFACTURER",
           "show": false
         },
         {
