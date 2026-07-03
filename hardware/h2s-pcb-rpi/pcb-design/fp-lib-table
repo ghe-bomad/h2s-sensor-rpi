@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "H2S_Sensor")(type "KiCad")(uri "${KIPRJMOD}/H2S_Sensor.pretty")(options "")(descr "Recovered in-repo library"))
+)
