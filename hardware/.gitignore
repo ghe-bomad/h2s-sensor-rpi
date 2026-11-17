@@ -1,1 +1,3 @@
 reports/
+# Fabrication Toolkit writes here; move the files to hardware/production/
+kicad/production/

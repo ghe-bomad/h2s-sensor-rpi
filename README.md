@@ -61,7 +61,8 @@ An open hardware board that measures hydrogen sulphide (H2S) from 0 to 1000 ppm,
 
 ```
 hardware/
-  kicad/            KiCad 10 project, footprints, production files (H2S-RPi-V1)
+  kicad/            KiCad 10 project and footprints
+  production/       gerbers, BOM and positions for JLCPCB (H2S-RPi-V1)
   datasheets/       cell, LMP91002 and ADS1115 datasheets
   images/           board renders
   schematic.pdf     schematic export

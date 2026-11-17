@@ -3,7 +3,7 @@
 ## 0.2.0 (2026-11-17)
 
 - **Repository restructured:** now `hardware/`, `software/` and `docs/`, licensed CERN-OHL-P-2.0 (hardware) and MIT (software, docs).
-- **Board files:** the latest KiCad design with production files H2S-RPi-V1. The schematic is also exported as PDF, with board renders and a `check.sh` for ERC and DRC.
+- **Board files:** the latest KiCad design in `hardware/kicad/`, production files H2S-RPi-V1 in `hardware/production/`. The schematic is also exported as PDF, with board renders and a `check.sh` for ERC and DRC.
 - **Datasheets:** the phosphine datasheet that was filed by mistake as the cell's datasheet is removed.
 - **Software:**
   - the Python package is now `h2s-reader`, with a `h2s-reader` command, and needs Python 3.11 or newer;

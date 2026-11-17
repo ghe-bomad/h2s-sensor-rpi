@@ -42,7 +42,7 @@ The I2C lines are pulled up to 3.3 V on the board, which matches the Pi's logic 
 
 ## Bill of materials
 
-The board can be assembled by JLCPCB with the files in [kicad/production/](kicad/production/). The LCSC numbers are in the BOM.
+The board can be assembled by JLCPCB with the files in [production/](production/). The LCSC numbers are in the BOM.
 
 | Designator | Value | Package | LCSC |
 |---|---|---|---|
@@ -66,10 +66,10 @@ Not in the BOM:
 
 ## Ordering and assembly
 
-1. **Upload** `kicad/production/H2S-RPi-V1.zip` (gerbers and drill files) to JLCPCB. Choose 2 layers and 1.6 mm thickness.
+1. **Upload** `production/H2S-RPi-V1.zip` (gerbers and drill files) to JLCPCB. Choose 2 layers and 1.6 mm thickness.
 2. **For assembly,** add `H2S-RPi-V1_bom.csv` and `H2S-RPi-V1_positions.csv`. Check the part rotations in the assembly preview, especially U2, U3 and U7.
 3. **Fit the cell sockets** by hand, then plug in the cell. The cell's WE pin is the one on its own, matching the footprint's pad 1.
-4. **To regenerate the production files after a change,** use the KiCad plugin "Fabrication Toolkit" (settings in `kicad/fabrication-toolkit-options.json`).
+4. **To regenerate the production files after a change,** use the KiCad plugin "Fabrication Toolkit" (settings in `kicad/fabrication-toolkit-options.json`). It writes to `kicad/production/`; move the files to `production/`.
 
 ## Editing the design
 
