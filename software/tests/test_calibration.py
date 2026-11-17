@@ -44,6 +44,8 @@ def test_missing_keys_keep_defaults(tmp_path):
 def test_example_file_loads():
     from pathlib import Path
     example = Path(__file__).resolve().parents[1] / "calibration.example.toml"
+    if not example.exists():          # vendored copies of the package ship without it
+        pytest.skip("calibration.example.toml not next to the tests")
     assert Calibration.from_toml(example).sensitivity_ua_per_ppm == 0.099
 
 
