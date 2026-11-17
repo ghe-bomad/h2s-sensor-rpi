@@ -20,8 +20,12 @@ def test_current_at_span_point():
 
 
 def test_ppm_baseline_and_span():
-    assert current_to_ppm(0.063) == pytest.approx(0.0, abs=1e-9)   # baseline -> 0 ppm
-    assert current_to_ppm(9.9) == pytest.approx(99.36, abs=0.01)   # span -> ~100 ppm
+    assert current_to_ppm(0.063, i0=0.063, sensitivity=0.099) == pytest.approx(0.0, abs=1e-9)
+    assert current_to_ppm(9.9, i0=0.063, sensitivity=0.099) == pytest.approx(99.36, abs=0.01)
+
+
+def test_default_calibration_is_datasheet_nominal():
+    assert current_to_ppm(9.0) == pytest.approx(100.0)   # 0.09 uA/ppm, zero 0 uA
 
 
 def test_thermistor_resistance_at_midpoint():
@@ -48,6 +52,14 @@ from h2s_reader.h2s_sensor import compensated_ppm, interpolate  # noqa: E402
 S, I0 = 0.099, 0.063
 
 
+def comp(i, temp_c, **kw):
+    return compensated_ppm(i, temp_c, **{"i0": I0, "sensitivity": S, **kw})
+
+
+def plain(i):
+    return current_to_ppm(i, i0=I0, sensitivity=S)
+
+
 def test_interpolate_linear_and_clamped():
     table = ((0, 0.0), (10, 10.0), (20, 30.0))
     assert interpolate(table, 5) == pytest.approx(5.0)
@@ -58,32 +70,31 @@ def test_interpolate_linear_and_clamped():
 
 def test_no_change_at_calibration_temperature():
     i = I0 + S * 250
-    assert compensated_ppm(i, 20.0) == pytest.approx(current_to_ppm(i), abs=1e-9)
+    assert comp(i, 20.0) == pytest.approx(plain(i), abs=1e-9)
 
 
 def test_cold_cell_reads_low_without_compensation():
     # datasheet: 94 % of the 20 C signal at 0 C, baseline unchanged
     i = I0 + S * 0.94 * 100
-    assert current_to_ppm(i) == pytest.approx(94.0, abs=0.01)
-    assert compensated_ppm(i, 0.0) == pytest.approx(100.0, abs=0.01)
+    assert plain(i) == pytest.approx(94.0, abs=0.01)
+    assert comp(i, 0.0) == pytest.approx(100.0, abs=0.01)
 
 
 def test_hot_cell_baseline_and_sensitivity():
     # datasheet at 50 C: baseline +5.5 ppm equivalent, 103 % sensitivity
     i = I0 + S * 5.5 + S * 1.03 * 100
-    assert compensated_ppm(i, 50.0) == pytest.approx(100.0, abs=0.01)
-    assert compensated_ppm(I0 + S * 5.5, 50.0) == pytest.approx(0.0, abs=1e-9)
+    assert comp(i, 50.0) == pytest.approx(100.0, abs=0.01)
+    assert comp(I0 + S * 5.5, 50.0) == pytest.approx(0.0, abs=1e-9)
 
 
 def test_calibration_done_at_other_temperature():
     # span measured at 30 C: the same 30 C reading must give the gas value back
     s30 = 0.101
     i = I0 + s30 * 400
-    assert compensated_ppm(i, 30.0, i0=I0, sensitivity=s30, cal_temp_c=30.0) \
-        == pytest.approx(400.0, abs=0.01)
+    assert comp(i, 30.0, sensitivity=s30, cal_temp_c=30.0) == pytest.approx(400.0, abs=0.01)
 
 
 def test_missing_temperature_falls_back_to_uncompensated():
     i = I0 + S * 50
-    assert compensated_ppm(i, math.nan) == pytest.approx(current_to_ppm(i))
-    assert compensated_ppm(i, None) == pytest.approx(current_to_ppm(i))
+    assert comp(i, math.nan) == pytest.approx(plain(i))
+    assert comp(i, None) == pytest.approx(plain(i))

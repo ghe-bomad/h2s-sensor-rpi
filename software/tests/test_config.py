@@ -16,6 +16,10 @@ def test_derived_zero_voltage():
     assert abs(config.V_ZERO - 0.50) < 1e-9  # 0.20 * 2.5 V
 
 
-def test_calibration_constants():
-    assert config.I0_UA == 0.063
-    assert config.SENSITIVITY_UA_PER_PPM == 0.099
+def test_default_calibration_is_datasheet_nominal():
+    assert config.I0_UA == 0.0
+    assert config.SENSITIVITY_UA_PER_PPM == 0.09
+
+
+def test_vout_limits_inside_adc_and_rail():
+    assert 0 < config.VOUT_MIN_V < config.V_ZERO < config.VOUT_MAX_V < config.NTC_VSUPPLY

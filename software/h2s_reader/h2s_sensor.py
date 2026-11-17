@@ -1,9 +1,10 @@
-"""H2S sensor domain layer: calibration math, then composition of the two drivers."""
+"""Calibration maths and the H2SSensor class that combines the two chip drivers."""
 
 import math
 from dataclasses import dataclass
 
 from . import config
+from .calibration import Calibration
 from .ads1115 import ADS1115
 from .lmp91002 import LMP91002
 
@@ -69,41 +70,57 @@ def rntc_to_celsius(r_ntc, r0=config.NTC_R0, beta=config.NTC_BETA, t0_k=config.N
 
 @dataclass
 class Reading:
-    ppm: float
-    i_we_uA: float
-    vout_v: float
-    temp_c: float
+    ppm: float           # H2S concentration (temperature compensated if enabled)
+    i_we_uA: float       # working-electrode current
+    vout_v: float        # amplifier output on AIN0
+    temp_c: float        # cell temperature from the NTC, NaN if the NTC is open or shorted
     r_ntc_ohm: float
+    saturated: bool = False   # Vout at a limit: the true concentration is out of range
 
 
 class H2SSensor:
-    """Composes the LMP91002 AFE and ADS1115 ADC into calibrated readings."""
+    """Combines the LMP91002 amplifier and the ADS1115 ADC into calibrated readings.
 
-    def __init__(self, bus):
+    `bus` is an smbus2.SMBus (or anything with the same methods).
+    """
+
+    def __init__(self, bus, calibration: Calibration | None = None):
+        self.calibration = calibration or Calibration()
         self._lmp = LMP91002(bus)
         self._ads = ADS1115(bus)
 
     @classmethod
-    def open(cls, bus_num=config.I2C_BUS):
+    def open(cls, bus_num=config.I2C_BUS, calibration: Calibration | None = None):
         from smbus2 import SMBus  # lazy: only needed on real hardware
-        return cls(SMBus(bus_num))
+        return cls(SMBus(bus_num), calibration)
 
     def configure(self):
+        """Wait for the LMP91002 and write its registers. Call once after power-up."""
         self._lmp.wait_ready()
-        self._lmp.configure()
+        self._lmp.configure(refcn=self.calibration.refcn)
 
-    def read(self):
-        vout = self._ads.read_channel_volts(config.ADS_CONF_AIN0)
-        v_node = self._ads.read_channel_volts(config.ADS_CONF_AIN2)
-        i_uA = vout_to_current_uA(vout)
-        r_ntc = vnode_to_rntc(v_node)
+    def read(self, average: int = 1) -> Reading:
+        """One reading; with average > 1 the mean of that many ADC conversions."""
+        if average < 1:
+            raise ValueError("average must be at least 1")
+        cal = self.calibration
+        vouts, nodes = [], []
+        for _ in range(average):
+            vouts.append(self._ads.read_channel_volts(config.ADS_CONF_AIN0))
+            nodes.append(self._ads.read_channel_volts(config.ADS_CONF_AIN2))
+        vout = sum(vouts) / average
+        v_node = sum(nodes) / average
+        i_uA = vout_to_current_uA(vout, v_zero=cal.v_zero, polarity=cal.polarity)
+        r_ntc = vnode_to_rntc(v_node, vsupply=cal.ntc_vsupply_v)
         temp_c = rntc_to_celsius(r_ntc)
-        ppm = (compensated_ppm(i_uA, temp_c) if config.TEMP_COMPENSATION
-               else current_to_ppm(i_uA))
-        return Reading(
-            ppm=ppm,
-            i_we_uA=i_uA,
-            vout_v=vout,
-            temp_c=temp_c,
-            r_ntc_ohm=r_ntc,
-        )
+        if cal.temp_compensation:
+            ppm = compensated_ppm(i_uA, temp_c, i0=cal.i0_ua,
+                                  sensitivity=cal.sensitivity_ua_per_ppm,
+                                  cal_temp_c=cal.cal_temp_c,
+                                  sensitivity_pct=cal.temp_sensitivity_pct,
+                                  baseline_ppm=cal.temp_baseline_ppm)
+        else:
+            ppm = current_to_ppm(i_uA, i0=cal.i0_ua, sensitivity=cal.sensitivity_ua_per_ppm)
+        saturated = any(v <= config.VOUT_MIN_V or v >= config.VOUT_MAX_V for v in vouts)
+        return Reading(ppm=ppm, i_we_uA=i_uA, vout_v=vout, temp_c=temp_c,
+                       r_ntc_ohm=r_ntc, saturated=saturated)

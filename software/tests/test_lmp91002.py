@@ -28,3 +28,9 @@ def test_wait_ready_times_out_when_never_ready():
     bus = FakeBus()  # STATUS reads 0x00 forever
     with pytest.raises(TimeoutError):
         LMP91002(bus).wait_ready(timeout_s=0.05, poll_s=0.01)
+
+
+def test_configure_with_high_zero_refcn():
+    bus = FakeBus()
+    LMP91002(bus).configure(refcn=0xC0)
+    assert bus.writes[2] == (config.LMP91002_ADDR, config.REG_REFCN, 0xC0)

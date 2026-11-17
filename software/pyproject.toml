@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "h2s-reader"
+version = "0.2.0"
+description = "Read the H2S sensor board (4-H2S-1000, LMP91002, ADS1115) over I2C on a Raspberry Pi"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = ["smbus2>=0.4"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/ghe-bomad/h2s-sensor-rpi"
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+h2s-reader = "h2s_reader.__main__:main"
+
+[tool.setuptools]
+packages = ["h2s_reader"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "tests"]
+testpaths = ["tests"]

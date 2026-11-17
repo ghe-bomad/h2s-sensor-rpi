@@ -1,0 +1,14 @@
+This repository uses two licences.
+
+Hardware (everything under hardware/: KiCad design files, footprints,
+production files, schematic and images):
+    CERN Open Hardware Licence Version 2 - Permissive (CERN-OHL-P-2.0),
+    full text in LICENSE-HARDWARE.
+    Copyright 2026 ETH Zurich, Global Health Engineering.
+    Source location: https://github.com/ghe-bomad/h2s-sensor-rpi
+
+Software and documentation (software/, docs/, README files):
+    MIT License, full text in LICENSE-SOFTWARE.
+
+The datasheets in hardware/datasheets/ belong to their manufacturers and are
+included for reference only; they are not covered by either licence.

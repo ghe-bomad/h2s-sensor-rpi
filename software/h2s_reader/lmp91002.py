@@ -29,10 +29,13 @@ class LMP91002:
             time.sleep(poll_s)
         raise TimeoutError("LMP91002 STATUS never signalled ready")
 
-    def configure(self):
-        """Unlock, write TIACN/REFCN (external ref + 20% zero), lock, then set mode."""
+    def configure(self, refcn=config.REFCN_VALUE):
+        """Unlock, write TIACN (7 kOhm, 10 Ohm load) and REFCN, lock, then set 3-lead mode.
+
+        refcn: 0x80 = external reference, 20 % zero (default); 0xC0 = 67 % zero.
+        """
         self._write(config.REG_LOCK, config.LOCK_UNLOCK)
         self._write(config.REG_TIACN, config.TIACN_VALUE)
-        self._write(config.REG_REFCN, config.REFCN_VALUE)
+        self._write(config.REG_REFCN, refcn)
         self._write(config.REG_LOCK, config.LOCK_LOCK)
         self._write(config.REG_MODECN, config.MODECN_VALUE)

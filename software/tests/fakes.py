@@ -5,7 +5,7 @@ class FakeBus:
     def __init__(self):
         self.byte_regs = {}            # (addr, reg) -> value
         self.block_reads = {}          # (addr, reg) -> [bytes]
-        self.conversion_by_config = {} # config_word -> [msb, lsb]
+        self.conversion_by_config = {} # config_word -> [msb, lsb] or [[msb, lsb], ...]
         self.writes = []               # (addr, reg, value)
         self.block_writes = []         # (addr, reg, [bytes])
         self._last_config = None
@@ -28,7 +28,10 @@ class FakeBus:
 
     def read_i2c_block_data(self, addr, reg, length):
         if reg == 0x00 and self._last_config in self.conversion_by_config:
-            return list(self.conversion_by_config[self._last_config])[:length]
+            value = self.conversion_by_config[self._last_config]
+            if value and isinstance(value[0], (list, tuple)):   # a sequence of results
+                value = value.pop(0) if len(value) > 1 else value[0]
+            return list(value)[:length]
         return list(self.block_reads.get((addr, reg), [0, 0]))[:length]
 
     # --- presence probe (selftest) ---
