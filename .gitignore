@@ -16,3 +16,6 @@ fp-info-cache
 # KiCad — editor lock files
 *.lck
 ~*.lck
+
+# KiCad local history
+.history/

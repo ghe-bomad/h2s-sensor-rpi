@@ -31,7 +31,8 @@ python -m h2s_reader --stream --interval 2
 ## Calibrating / tuning
 
 All tunable values live in `h2s_reader/config.py`:
-- H₂S: `I0_UA` (zero-gas baseline) and `SENSITIVITY_UA_PER_PPM` — from your cal certificate.
+- H₂S: `I0_UA` (zero-gas baseline), `SENSITIVITY_UA_PER_PPM` and `CAL_TEMP_C`, from your own zero and span calibration with certified gas (`docs/CALIBRATION.md` in the repo root).
+- Temperature compensation: `TEMP_COMPENSATION`, `TEMP_SENSITIVITY_PCT`, `TEMP_BASELINE_PPM` (4-H2S-1000 datasheet averages until you measure your own).
 - NTC: `NTC_R0`, `NTC_BETA`, `NTC_R_FIXED`, `NTC_VSUPPLY`.
 - AFE: `R_TIA`, `INT_Z`/`REFCN_VALUE`, `POLARITY`.
 
